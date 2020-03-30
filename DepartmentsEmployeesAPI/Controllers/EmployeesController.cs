@@ -28,7 +28,10 @@ namespace DepartmentsEmployeesAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(
+            [FromQuery] string firstName,
+            [FromQuery] string lastName,
+            [FromQuery] int? departmentId)
         {
             using (SqlConnection conn = Connection)
             {
@@ -39,7 +42,26 @@ namespace DepartmentsEmployeesAPI.Controllers
                      @"Select e.Id, e.FirstName, e.LastName, e.DepartmentId, d.Id , d.DeptName  
                      FROM Employee e
                      Left Join Department d
-                     On DepartmentId = d.Id";
+                     On DepartmentId = d.Id
+                     Where 1 = 1";
+
+                    if (firstName != null)
+                    {
+                        cmd.CommandText += " AND FirstName Like @firstName";
+                        cmd.Parameters.Add(new SqlParameter("@firstName", "%" + firstName + "%"));
+                    }
+
+                    if (lastName != null)
+                    {
+                        cmd.CommandText += " AND LastName Like @lastName";
+                        cmd.Parameters.Add(new SqlParameter("@lastName", "%" + lastName + "%"));
+                    }
+
+                    if (departmentId != null)
+                    {
+                        cmd.CommandText += " AND DepartmentId = @departmentId";
+                        cmd.Parameters.Add(new SqlParameter("@departmentId", departmentId));
+                    }
                     SqlDataReader reader = cmd.ExecuteReader();
                     List<Employee> employees = new List<Employee>();
 
