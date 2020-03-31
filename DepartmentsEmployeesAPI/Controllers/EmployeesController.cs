@@ -251,5 +251,21 @@ namespace DepartmentsEmployeesAPI.Controllers
             }
         }
 
+        //can hit this method by running api/employees/somethingveryweird 
+        //This is a custom route
+        //[HttpGet]
+        //[Route("somethingveryweird")]
+        //public async Task<IActionResult> GetSomething()
+        //{
+        //    var somethings = new List<string>()
+        //    {
+        //        "foo",
+        //        "bar",
+        //        "baz"
+        //    };
+
+        //    return Ok(somethings);
+        //}
+
     }
 }
